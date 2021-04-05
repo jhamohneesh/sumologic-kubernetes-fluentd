@@ -5,14 +5,14 @@ ECR_URL =  public.ecr.aws/sumologic
 REPO_URL = $(ECR_URL)/$(IMAGE_NAME)
 
 build:
-	DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64 \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
 		--target builder \
 		--tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) \
 	        .
 
-	DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64 \
 		--build-arg BUILD_TAG=$(BUILD_TAG) \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
