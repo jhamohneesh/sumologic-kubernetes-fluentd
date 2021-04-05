@@ -47,5 +47,5 @@ jobs:
       - name: Run Buildx (push image)      
         if: success()      
         run: |        
-          docker buildx build --platform linux/arm64 --build-arg --tag odidev/kubernetes-fluentd:latest-builder-cache-arm64 -f Dockerfile.aarch64 --output type=image,push=true .
-          
+          docker buildx build --platform linux/arm64 --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from public.ecr.aws/sumologic/kubernetes-fluentd:latest-builder-cache --tag odidev/kubernetes-fluentd:latest-builder-cache-arm64 -f Dockerfile.aarch64 --output type=image,push=true .
+          docker buildx build --platform linux/arm64 --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from public.ecr.aws/sumologic/kubernetes-fluentd:latest-builder-cache --cache-from public.ecr.aws/sumologic/kubernetes-fluentd:latest --tag odidev/kubernetes-fluentd:latest-arm64 -f Dockerfile.aarch64 --output type=image,push=true .          
