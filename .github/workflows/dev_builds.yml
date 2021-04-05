@@ -23,8 +23,8 @@ jobs:
      runs-on: ubuntu-20.04    
      env:
       DOCKER_IMAGE: kubernetes-fluentd
-      DOCKER_USERNAME: odidev
-      DOCKER_PASSWORD: nibble@123
+      DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
       DOCKER_TARGET_PLATFORM: linux/arm64                 
      steps:
       - name: Checkout the code       
@@ -43,7 +43,7 @@ jobs:
       - name: Docker Login      
         if: success()      
         run: |        
-          echo "${DOCKER_PASSWORD}" | docker login  --username odidev --password nibble@123          
+          docker login  --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}          
       - name: Run Buildx (push image)      
         if: success()      
         run: |        
