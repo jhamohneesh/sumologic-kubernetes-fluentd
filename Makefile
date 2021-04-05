@@ -4,7 +4,7 @@ IMAGE_NAME = kubernetes-fluentd
 ECR_URL =  public.ecr.aws/sumologic
 REPO_URL = $(ECR_URL)/$(IMAGE_NAME)
 
-build-amd64:
+build:
 	DOCKER_BUILDKIT=1 docker build \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
