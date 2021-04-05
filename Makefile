@@ -10,15 +10,15 @@ build:
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
 		--target builder \
 		--tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) \
-	        .
+		.
 
 	DOCKER_BUILDKIT=1 docker build \
 		--build-arg BUILD_TAG=$(BUILD_TAG) \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
-		--cache-from $(REPO_URL):$(BUILD_CACHZE_TAG) \
+		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
 		--cache-from $(REPO_URL):latest \
 		--tag $(IMAGE_NAME):$(BUILD_TAG) \
-		.                .
+		.
 
 push:
 	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
