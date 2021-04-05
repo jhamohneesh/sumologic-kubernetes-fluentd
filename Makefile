@@ -23,7 +23,7 @@ build:
 push:
 	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
 	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
-	docker tag $(IMAGE_NAME):$(BUILD_TAG) odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
+	docker tag $(IMAGE_NAME):$(BUILD_TAG) odidev/$(IMAGE_NAME):$(BUILD_TAG)
 	docker push odidev/$(IMAGE_NAME):$(BUILD_TAG)
 
 login:
