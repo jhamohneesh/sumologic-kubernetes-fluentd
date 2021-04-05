@@ -4,24 +4,24 @@ IMAGE_NAME = kubernetes-fluentd
 ECR_URL =  public.ecr.aws/sumologic
 REPO_URL = $(ECR_URL)/$(IMAGE_NAME)
 
-build:
-	docker buildx build --platform linux/amd64 \
+build-amd64:
+	DOCKER_BUILDKIT=1 docker build \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
 		--target builder \
 		-tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) \
 	        .
 
-	docker buildx build --platform linux/amd64 \
+	DOCKER_BUILDKIT=1 docker build \
 		--build-arg BUILD_TAG=$(BUILD_TAG) \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
-		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
+		--cache-from $(REPO_URL):$(BUILD_CACHZE_TAG) \
 		--cache-from $(REPO_URL):latest \
 		--tag $(IMAGE_NAME):$(BUILD_TAG) \
 		.
 
 build-arm64:
-	DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+	docker buildx build --platform linux/arm64 \
                 --build-arg BUILDKIT_INLINE_CACHE=1 \
                 --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
                 --target builder \
@@ -29,7 +29,7 @@ build-arm64:
                 -f Dockerfile.aarch64 \
                 .
 
-	DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+	docker buildx build --platform linux/arm64 \
                 --build-arg BUILD_TAG=$(BUILD_TAG) \
                 --build-arg BUILDKIT_INLINE_CACHE=1 \
                 --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
