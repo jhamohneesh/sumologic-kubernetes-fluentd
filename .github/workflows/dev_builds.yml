@@ -17,7 +17,7 @@ jobs:
       - name: Build kubernetes-fluentd
         run: make build && docker image ls
       - name: Build kubernetes-fluentd-arm64
-        run: make build-arm64 && docker iage ls 
+        run: make build-arm64 && docker image ls 
       - name: Login to DockerHub
         if: success() && github.event_name != 'pull_request'
         uses: docker/login-action@v1
