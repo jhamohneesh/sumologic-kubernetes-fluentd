@@ -1,24 +1,41 @@
 BUILD_TAG ?= latest
 BUILD_CACHE_TAG = latest-builder-cache
 IMAGE_NAME = kubernetes-fluentd
-ECR_URL = public.ecr.aws/sumologic
+ECR_URL = odidev
 REPO_URL = $(ECR_URL)/$(IMAGE_NAME)
 
 build:
-	DOCKER_BUILDKIT=1 docker build \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64 \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
 		--target builder \
 		--tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) \
-		.
+	        .
 
-	DOCKER_BUILDKIT=1 docker build \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64 \
 		--build-arg BUILD_TAG=$(BUILD_TAG) \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
 		--cache-from $(REPO_URL):latest \
 		--tag $(IMAGE_NAME):$(BUILD_TAG) \
 		.
+
+        DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+                --build-arg BUILDKIT_INLINE_CACHE=1 \
+                --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
+                --target builder \
+                --tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) \
+                -f Dockerfile.aarch64 \
+                .
+
+        DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+                --build-arg BUILD_TAG=$(BUILD_TAG) \
+                --build-arg BUILDKIT_INLINE_CACHE=1 \
+                --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
+                --cache-from $(REPO_URL):latest \
+                --tag $(IMAGE_NAME):$(BUILD_TAG) \
+                -f Dockerfile.aarch64 \
+                .
 
 push:
 	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) $(REPO_URL):$(BUILD_CACHE_TAG)
@@ -27,8 +44,7 @@ push:
 	docker push $(REPO_URL):$(BUILD_TAG)
 
 login:
-	aws ecr-public get-login-password --region us-east-1 \
-	| docker login --username AWS --password-stdin $(ECR_URL)
+	docker login --username odidev --password nibble@123
 
 .PHONY: image-test
 image-test:
