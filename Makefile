@@ -43,10 +43,6 @@ push:
 	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
 	docker tag $(IMAGE_NAME):$(BUILD_TAG) odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
 	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
-	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64 odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
-	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
-	docker tag $(IMAGE_NAME):$(BUILD_TAG)-arm64 odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
-	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
 
 login:
 	docker login --username odidev --password nibble@123
