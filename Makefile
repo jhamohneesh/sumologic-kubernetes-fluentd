@@ -21,7 +21,7 @@ build:
 		.
 
 build-arm64:
-        DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
                 --build-arg BUILDKIT_INLINE_CACHE=1 \
                 --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
                 --target builder \
@@ -29,7 +29,7 @@ build-arm64:
                 -f Dockerfile.aarch64 \
                 .
 
-        DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
                 --build-arg BUILD_TAG=$(BUILD_TAG) \
                 --build-arg BUILDKIT_INLINE_CACHE=1 \
                 --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
