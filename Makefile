@@ -1,7 +1,7 @@
 BUILD_TAG ?= latest
 BUILD_CACHE_TAG = latest-builder-cache
 IMAGE_NAME = kubernetes-fluentd
-ECR_URL = odidev
+ECR_URL =  public.ecr.aws/sumologic
 REPO_URL = $(ECR_URL)/$(IMAGE_NAME)
 
 build:
@@ -39,14 +39,14 @@ build-arm64:
                 .
 
 push:
-	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) $(REPO_URL):$(BUILD_CACHE_TAG)
-	docker push $(REPO_URL):$(BUILD_CACHE_TAG)
-	docker tag $(IMAGE_NAME):$(BUILD_TAG) $(REPO_URL):$(BUILD_TAG)
-	docker push $(REPO_URL):$(BUILD_TAG)
-	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64 $(REPO_URL):$(BUILD_CACHE_TAG)-arm64
-	docker push $(REPO_URL):$(BUILD_CACHE_TAG)-arm64
-	docker tag $(IMAGE_NAME):$(BUILD_TAG)-arm64 $(REPO_URL):$(BUILD_TAG)-arm64
-	docker push $(REPO_URL):$(BUILD_TAG)-arm64
+	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
+	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
+	docker tag $(IMAGE_NAME):$(BUILD_TAG) odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
+	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)
+	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64 odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
+	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
+	docker tag $(IMAGE_NAME):$(BUILD_TAG)-arm64 odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
+	docker push odidev/$(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64
 
 login:
 	docker login --username odidev --password nibble@123
