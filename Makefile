@@ -20,11 +20,12 @@ build:
 		--tag $(IMAGE_NAME):$(BUILD_TAG) \
 		.
 
+build-arm64:
         DOCKER_BUILDKIT=1 docker buildx build --platform linux/arm64 \
                 --build-arg BUILDKIT_INLINE_CACHE=1 \
                 --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
                 --target builder \
-                --tag $(IMAGE_NAME):$(BUILD_CACHE_TAG) \
+                --tag $(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64 \
                 -f Dockerfile.aarch64 \
                 .
 
@@ -33,7 +34,7 @@ build:
                 --build-arg BUILDKIT_INLINE_CACHE=1 \
                 --cache-from $(REPO_URL):$(BUILD_CACHE_TAG) \
                 --cache-from $(REPO_URL):latest \
-                --tag $(IMAGE_NAME):$(BUILD_TAG) \
+                --tag $(IMAGE_NAME):$(BUILD_TAG)-arm64 \
                 -f Dockerfile.aarch64 \
                 .
 
@@ -42,6 +43,10 @@ push:
 	docker push $(REPO_URL):$(BUILD_CACHE_TAG)
 	docker tag $(IMAGE_NAME):$(BUILD_TAG) $(REPO_URL):$(BUILD_TAG)
 	docker push $(REPO_URL):$(BUILD_TAG)
+	docker tag $(IMAGE_NAME):$(BUILD_CACHE_TAG)-arm64 $(REPO_URL):$(BUILD_CACHE_TAG)-arm64
+	docker push $(REPO_URL):$(BUILD_CACHE_TAG)-arm64
+	docker tag $(IMAGE_NAME):$(BUILD_TAG)-arm64 $(REPO_URL):$(BUILD_TAG)-arm64
+	docker push $(REPO_URL):$(BUILD_TAG)-arm64
 
 login:
 	docker login --username odidev --password nibble@123
